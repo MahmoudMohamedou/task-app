@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String    @id @default(uuid())
+  name              String
+  email             String    @unique()
+  password          String
+  createdAt         DateTime? @default(now())
+  updatedAt         DateTime? @default(now()) @updatedAt()
+  logoUrl           String?
+  comments          Comment[] @relation("comment_user")
+  tasksOwnedByMe    Task[]    @relation("task_owner")
+  tasksAssignedToMe Task[]    @relation("task_assignee")
+  roles             Role[]    @relation("role_users")
+}
+
+model Comment {
+  id          String    @id @default(uuid())
+  content     String
+  postedAt    DateTime  @default(now())
+  updatedAt   DateTime? @default(now()) @updatedAt()
+  posterId    String    @map("poster_id")
+  postedBy    User      @relation(name: "comment_user", fields: [posterId], references: [id], onDelete: Cascade)
+  taskId      String    @map("task_id")
+  relatedTask Task      @relation(name: "comment_task", fields: [taskId], references: [id], onDelete: Cascade)
+}
+
+model Task {
+  id          String    @id @default(uuid())
+  title       String
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @default(now()) @updatedAt()
+  description String
+  ownerId     String
+  createdBy   User      @relation(name: "task_owner", fields: [ownerId], references: [id], onDelete: Cascade)
+  assigneeId  String?
+  assignedTo  User?     @relation(name: "task_assignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  priority    String?
+  status      String?
+  endDate     DateTime?
+  idNum       Int       @default(autoincrement())
+  comments    Comment[] @relation("comment_task")
+}
+
+model Role {
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now()) @updatedAt()
+  users     User[]    @relation("role_users")
+}
