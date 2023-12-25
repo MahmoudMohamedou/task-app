@@ -9,10 +9,10 @@ import {
   ValidationPipe,
   UseInterceptors,
 } from '@nestjs/common';
-import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UserInterceptor } from 'src/interceptors/user/user.interceptor';
+import { UserService } from '../services/user.service';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
+import { UserInterceptor } from 'src/user/interceptors/user.interceptor';
 
 @Controller('user')
 export class UserController {
