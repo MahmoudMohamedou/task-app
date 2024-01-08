@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserService } from 'src/user/services/user.service';
 import { compare } from 'bcrypt';
 import { Request } from 'express';
@@ -9,6 +13,9 @@ export class AuthService {
 
   async signIn(username: string, pass: string, req: Request): Promise<any> {
     const user = await this.usersService.findUserByEmail(username);
+    if (!user) {
+      throw new NotFoundException('email not found');
+    }
     const isPasswordMatch = await compare(pass, user.password);
     if (!isPasswordMatch) {
       throw new UnauthorizedException();

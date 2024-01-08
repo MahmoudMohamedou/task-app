@@ -11,17 +11,18 @@ datasource db {
 }
 
 model User {
-  id                String    @id @default(uuid())
+  id                String     @id @default(uuid())
   name              String
-  email             String    @unique()
+  email             String     @unique()
   password          String
-  createdAt         DateTime? @default(now())
-  updatedAt         DateTime? @default(now()) @updatedAt()
+  createdAt         DateTime?  @default(now())
+  updatedAt         DateTime?  @default(now()) @updatedAt()
   logoUrl           String?
-  comments          Comment[] @relation("comment_user")
-  tasksOwnedByMe    Task[]    @relation("task_owner")
-  tasksAssignedToMe Task[]    @relation("task_assignee")
-  roles             Role[]    @relation("role_users")
+  comments          Comment[]  @relation("comment_user")
+  tasksOwnedByMe    Task[]     @relation("task_owner")
+  tasksAssignedToMe Task[]     @relation("task_assignee")
+  permissions       RoleEnum[] // To be removed later
+  roles             Role[]     @relation("role_users", map: "role_id_fk")
 }
 
 model Comment {
@@ -57,5 +58,20 @@ model Role {
   name      String
   createdAt DateTime? @default(now())
   updatedAt DateTime? @default(now()) @updatedAt()
-  users     User[]    @relation("role_users")
+  users     User[]    @relation("role_users", map: "user_id_fk")
+}
+
+model Session {
+  id      String   @id @map("sid")
+  cookie  Json     @map("sess")
+  expires DateTime @map("expire")
+
+  @@map("session")
+}
+
+// To be removed later
+enum RoleEnum {
+  ADMIN
+  CREATE_TASK
+  DELETE_TASK
 }

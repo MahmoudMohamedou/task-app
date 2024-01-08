@@ -16,14 +16,12 @@ require('./extends.module');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  console.log('Env: ', process.env.SESSION_SECRET);
   app.use(cookieParser());
+  app.useGlobalFilters(new GlobalFilter(), new HttpFilter());
   app.use(
     session({
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       store: new (pgs(session))({
-        createTableIfMissing: true,
         conString: process.env.DATABASE_URL,
       }),
       secret: process.env.SESSION_SECRET || 'hard-secret',
@@ -31,11 +29,10 @@ async function bootstrap() {
       saveUninitialized: false,
       name: 'SESSION_ID',
       cookie: {
-        maxAge: 2 * 60 * 1000,
+        maxAge: 60 * 60 * 1000,
       },
     }),
   );
-  app.useGlobalFilters(new GlobalFilter(), new HttpFilter());
   // app.useGlobalInterceptors(new UserInterceptor());
   await app.listen(3000);
 }

@@ -8,11 +8,14 @@ import {
   Delete,
   ValidationPipe,
   UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserInterceptor } from 'src/user/interceptors/user.interceptor';
+import { Role } from 'src/decorators/role.decorator';
+import { RoleGuard } from 'src/guards/role/role.guard';
 
 @Controller('user')
 export class UserController {
@@ -43,6 +46,8 @@ export class UserController {
   }
 
   @Delete(':id')
+  @UseGuards(RoleGuard)
+  @Role(['ADMIN'])
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
   }

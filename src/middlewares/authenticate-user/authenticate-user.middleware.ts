@@ -4,15 +4,16 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { SessionFields } from 'src/user/interfaces/session-fileds.interface';
 
 @Injectable()
 export class AuthenticateUserMiddleware implements NestMiddleware {
-  use(req: Request, res: any, next: () => void) {
+  use(req: Request & { user?: SessionFields }, res: any, next: () => void) {
     const cookie = req.cookies['SESSION_ID'];
-    console.log('Cookie: ', cookie);
     if (!cookie) {
       throw new UnauthorizedException();
     }
+    req.user = req.session.user;
     next();
   }
 }
