@@ -23,9 +23,17 @@ export class UserService {
     return users;
   }
 
-  async findOne(id: string) {
+  async findUserById(id: string) {
     const user = await context.user.findUnique({
       where: { id },
+    });
+    return user;
+  }
+
+  async findUserByEmail(email: string) {
+    const user = await context.user.findUnique({
+      where: { email },
+      select: { id: true, email: true, name: true, password: true },
     });
     return user;
   }
