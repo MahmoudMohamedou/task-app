@@ -12,9 +12,10 @@ import { UserInterceptor } from '../user/interceptors/user.interceptor';
 import { AuthModule } from 'src/auth/auth.module';
 import { AuthenticateUserMiddleware } from 'src/middlewares/authenticate-user/authenticate-user.middleware';
 import { TaskModule } from 'src/task/task.module';
+import { CommentModule } from 'src/comment/comment.module';
 
 @Module({
-  imports: [UserModule, AuthModule, TaskModule],
+  imports: [UserModule, AuthModule, TaskModule, CommentModule],
   controllers: [],
   providers: [
     {
