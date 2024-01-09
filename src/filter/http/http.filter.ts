@@ -5,6 +5,7 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { Cause } from 'src/middlewares/authenticate-user/authenticate-user.middleware';
 
 @Catch(HttpException)
 export class HttpFilter implements ExceptionFilter {
@@ -18,7 +19,10 @@ export class HttpFilter implements ExceptionFilter {
       statusCode: status,
       timestamp: new Date().toISOString(),
       message: (exception.getResponse() as any).message,
-      name: exception.name,
+      name:
+        exception.cause === Cause.SESSION_EXPIRED
+          ? Cause.SESSION_EXPIRED
+          : exception.name,
       path: request.url,
     });
   }

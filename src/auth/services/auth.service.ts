@@ -6,6 +6,7 @@ import {
 import { UserService } from 'src/user/services/user.service';
 import { compare } from 'bcrypt';
 import { Request } from 'express';
+import { SignUp } from 'src/user/dto/sign-up.dto';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +24,20 @@ export class AuthService {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...result } = user;
+    req.session['user'] = result;
+    return result;
+  }
+
+  async signUp(params: SignUp, req: Request): Promise<any> {
+    const { email, password, name } = params;
+    const user = await this.usersService.create({
+      email,
+      name,
+      password,
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: pass, ...result } = user;
     req.session['user'] = result;
     return result;
   }

@@ -11,9 +11,10 @@ import { GlobalFilter } from '../filter/global/global.filter';
 import { UserInterceptor } from '../user/interceptors/user.interceptor';
 import { AuthModule } from 'src/auth/auth.module';
 import { AuthenticateUserMiddleware } from 'src/middlewares/authenticate-user/authenticate-user.middleware';
+import { TaskModule } from 'src/task/task.module';
 
 @Module({
-  imports: [UserModule, AuthModule],
+  imports: [UserModule, AuthModule, TaskModule],
   controllers: [],
   providers: [
     {
@@ -36,6 +37,7 @@ export class AppModule implements NestModule {
       .apply(AuthenticateUserMiddleware)
       .exclude(
         { path: 'auth/login', method: RequestMethod.POST },
+        { path: 'auth/signup', method: RequestMethod.POST },
         { path: '/user', method: RequestMethod.POST },
       )
       .forRoutes('');

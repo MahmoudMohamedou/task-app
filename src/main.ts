@@ -23,6 +23,7 @@ async function bootstrap() {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       store: new (pgs(session))({
         conString: process.env.DATABASE_URL,
+        disableTouch: true,
       }),
       secret: process.env.SESSION_SECRET || 'hard-secret',
       resave: false,
