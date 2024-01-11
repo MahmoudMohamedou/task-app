@@ -33,6 +33,12 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @Get('is-session-valid')
+  async isValidSession(@Req() req, @Res() res) {
+    return this.authService.isValidSession(req, res);
+  }
+
+  @HttpCode(HttpStatus.OK)
   @Get('logout')
   async logout(@Req() req: Request, @Res() res: Response) {
     req.session.destroy((err: any) => {

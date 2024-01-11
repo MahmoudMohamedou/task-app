@@ -36,6 +36,7 @@
     "class-validator": "^0.14.0",
     "connect-pg-simple": "^9.0.1",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "express-session": "^1.17.3",
     "prisma": "^5.7.1",
     "reflect-metadata": "^0.1.13",

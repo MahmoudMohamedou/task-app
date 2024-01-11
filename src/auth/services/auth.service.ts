@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from 'src/user/services/user.service';
 import { compare } from 'bcrypt';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { SignUp } from 'src/user/dto/sign-up.dto';
 
 @Injectable()
@@ -40,5 +40,15 @@ export class AuthService {
     const { password: pass, ...result } = user;
     req.session['user'] = result;
     return result;
+  }
+
+  async isValidSession(req: Request, res: Response): Promise<any> {
+    const cookie = req.headers.cookie;
+    if (!cookie) {
+      res.json(null);
+      return;
+    }
+
+    res.json(req.session.user);
   }
 }

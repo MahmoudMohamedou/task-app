@@ -6,6 +6,7 @@ import { HttpFilter } from './filter/http/http.filter';
 import * as session from 'express-session';
 import * as cookieParser from 'cookie-parser';
 import * as pgs from 'connect-pg-simple';
+import * as cors from 'cors';
 
 require('./extends.module');
 
@@ -18,6 +19,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
   app.useGlobalFilters(new GlobalFilter(), new HttpFilter());
+  app.use(
+    cors({
+      origin: ['http://localhost:5173'],
+    }),
+  );
   app.use(
     session({
       // eslint-disable-next-line @typescript-eslint/no-var-requires
