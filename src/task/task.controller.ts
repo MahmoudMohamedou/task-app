@@ -8,18 +8,23 @@ import {
   Delete,
   ValidationPipe,
   ParseUUIDPipe,
+  Req,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { Request } from 'express';
 
 @Controller('task')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
   @Post()
-  create(@Body(new ValidationPipe()) createTaskDto: CreateTaskDto) {
-    return this.taskService.create(createTaskDto);
+  create(
+    @Body(new ValidationPipe()) createTaskDto: CreateTaskDto,
+    @Req() req: Request,
+  ) {
+    return this.taskService.create(createTaskDto, req);
   }
 
   @Get()

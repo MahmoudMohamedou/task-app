@@ -11,7 +11,6 @@ export function IsMatch(
 ) {
   // eslint-disable-next-line @typescript-eslint/ban-types
   return function (object: Object, propertyName: string) {
-    console.log('Decorator1: ', object);
     registerDecorator({
       name: 'IsMatch',
       target: object.constructor,
@@ -20,7 +19,6 @@ export function IsMatch(
       options: validationOptions,
       validator: {
         validate(value: any, args: ValidationArguments) {
-          console.log('Decorator2: ', args, propertyName);
           const [relatedPropertyName] = args.constraints;
           const relatedValue = (args.object as any)[relatedPropertyName];
           return (

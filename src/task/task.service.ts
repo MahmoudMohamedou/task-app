@@ -1,19 +1,47 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Req } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { context } from 'config';
+import { Request } from 'express';
 
 @Injectable()
 export class TaskService {
-  async create(createTaskDto: CreateTaskDto) {
+  async create(createTaskDto: CreateTaskDto, @Req() req: Request) {
     const newTask = await context.task.create({
-      data: createTaskDto,
+      data: {
+        ...createTaskDto,
+        ownerId: req.session.user.id,
+      },
+      include: {
+        assignedTo: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
     });
     return newTask;
   }
 
   async findAll() {
-    return await context.task.findMany();
+    const data = await context.task.findMany({
+      include: {
+        assignedTo: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        createdBy: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+    return data;
   }
 
   async findOne(id: string) {
