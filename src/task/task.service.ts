@@ -54,6 +54,20 @@ export class TaskService {
     return await context.task.update({
       data: updateTaskDto,
       where: { id },
+      include: {
+        assignedTo: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        createdBy: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
     });
   }
 
