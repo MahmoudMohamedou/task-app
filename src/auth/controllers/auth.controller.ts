@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
+  Param,
   Post,
   Req,
   Res,
@@ -28,8 +29,22 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('signup')
-  async signUp(@Body(new ValidationPipe()) signUp: SignUp, @Req() req) {
-    return this.authService.signUp(signUp, req);
+  async signUp(
+    @Body(new ValidationPipe()) signUp: SignUp,
+    @Req() req,
+    @Res() res,
+  ) {
+    return this.authService.signUp(signUp, req, res);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get('/verify/:userId/:token')
+  async verifyAccount(
+    @Param('userId') userId: string,
+    @Param('token') token: string,
+    @Res() res,
+  ) {
+    return this.authService.verifyAccount(userId, token, res);
   }
 
   @HttpCode(HttpStatus.OK)

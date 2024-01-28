@@ -13,9 +13,10 @@ import { AuthModule } from 'src/auth/auth.module';
 import { AuthenticateUserMiddleware } from 'src/middlewares/authenticate-user/authenticate-user.middleware';
 import { TaskModule } from 'src/task/task.module';
 import { CommentModule } from 'src/comment/comment.module';
+import { TokenModule } from 'src/token/token.module';
 
 @Module({
-  imports: [UserModule, AuthModule, TaskModule, CommentModule],
+  imports: [UserModule, AuthModule, TaskModule, CommentModule, TokenModule],
   controllers: [],
   providers: [
     {
@@ -40,6 +41,7 @@ export class AppModule implements NestModule {
         { path: 'auth/login', method: RequestMethod.POST },
         { path: 'auth/signup', method: RequestMethod.POST },
         { path: 'auth/is-session-valid', method: RequestMethod.GET },
+        { path: 'auth/verify/:userId/:token', method: RequestMethod.GET },
         // { path: '/user', method: RequestMethod.POST },
       )
       .forRoutes('');

@@ -7,6 +7,7 @@ import * as session from 'express-session';
 import * as cookieParser from 'cookie-parser';
 import * as pgs from 'connect-pg-simple';
 import * as cors from 'cors';
+import * as express from 'express';
 
 require('./extends.module');
 
@@ -17,6 +18,7 @@ require('./extends.module');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.use(express.static('public'));
   app.use(cookieParser());
   app.useGlobalFilters(new GlobalFilter(), new HttpFilter());
   app.use(

@@ -3,17 +3,26 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { SALT_ROUND, context } from 'config';
 import { hash } from 'bcrypt';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class UserService {
   async create(createUserDto: CreateUserDto) {
     const { password } = createUserDto;
     const hashedPassword = await hash(password, SALT_ROUND);
+    // create Token
+    const token = crypto.randomBytes(32).toString('hex');
     const newUser = await context.user.create({
       data: {
         ...createUserDto,
         password: hashedPassword,
+        token: {
+          create: {
+            token,
+          },
+        },
       },
+      include: { token: true },
     });
     return newUser;
   }
@@ -38,6 +47,7 @@ export class UserService {
         email: true,
         name: true,
         password: true,
+        validated: true,
         permissions: true,
       },
     });

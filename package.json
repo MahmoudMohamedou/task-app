@@ -31,6 +31,8 @@
     "@types/bcrypt": "^5.0.2",
     "@types/connect-pg-simple": "^7.0.3",
     "@types/express-session": "^1.17.10",
+    "@types/handlebars": "^4.1.0",
+    "@types/nodemailer": "^6.4.14",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
@@ -38,6 +40,8 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express-session": "^1.17.3",
+    "handlebars": "^4.7.8",
+    "nodemailer": "^6.9.8",
     "prisma": "^5.7.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1"

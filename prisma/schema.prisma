@@ -14,6 +14,7 @@ model User {
   id                String     @id @default(uuid())
   name              String
   email             String     @unique()
+  validated         Boolean    @default(false)
   password          String
   createdAt         DateTime?  @default(now())
   updatedAt         DateTime?  @default(now()) @updatedAt()
@@ -23,6 +24,7 @@ model User {
   tasksAssignedToMe Task[]     @relation("task_assignee")
   permissions       RoleEnum[] // To be removed later
   roles             Role[]     @relation("role_users", map: "role_id_fk")
+  token             Token?
 }
 
 model Comment {
@@ -67,6 +69,13 @@ model Session {
   expires DateTime @map("expire")
 
   @@map("session")
+}
+
+model Token {
+  id     String @id @default(uuid())
+  token  String
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 // To be removed later
