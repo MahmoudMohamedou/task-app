@@ -21,7 +21,13 @@ export class TaskController {
 
   @Post()
   create(
-    @Body(new ValidationPipe()) createTaskDto: CreateTaskDto,
+    @Body(
+      new ValidationPipe({
+        forbidNonWhitelisted: true,
+        whitelist: true,
+      }),
+    )
+    createTaskDto: CreateTaskDto,
     @Req() req: Request,
   ) {
     return this.taskService.create(createTaskDto, req);
