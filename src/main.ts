@@ -23,7 +23,7 @@ async function bootstrap() {
   app.useGlobalFilters(new GlobalFilter(), new HttpFilter());
   app.use(
     cors({
-      origin: ['http://localhost:5000'],
+      origin: ['http://localhost:5000', 'http://213.130.144.81:5000'],
       credentials: true,
     }),
   );
@@ -43,7 +43,9 @@ async function bootstrap() {
       },
     }),
   );
+  console.log('ENVIRONMENT: ', process.env.NODE_ENV);
   // app.useGlobalInterceptors(new UserInterceptor());
   await app.listen(3000);
 }
+
 bootstrap();

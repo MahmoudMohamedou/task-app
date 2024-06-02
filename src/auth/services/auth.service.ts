@@ -54,7 +54,10 @@ export class AuthService {
     });
 
     // Send an email to verify account
-    const url = `${process.env.HOST_SERVER}/auth/verify/${userWithToken.id}/${userWithToken.token.token}`;
+    const isProd = process.env.NODE_ENV === 'prod';
+    const url = `${
+      isProd ? process.env.HOST_SERVER_PROD : process.env.HOST_SERVER_LOCAL
+    }/auth/verify/${userWithToken.id}/${userWithToken.token.token}`;
     const html = fs
       .readFileSync('public/verify-email-template.html', { encoding: 'utf-8' })
       .toString();
