@@ -23,7 +23,7 @@ async function bootstrap() {
   app.useGlobalFilters(new GlobalFilter(), new HttpFilter());
   app.use(
     cors({
-      origin: ['http://localhost:5173'],
+      origin: ['http://localhost:5000'],
       credentials: true,
     }),
   );
