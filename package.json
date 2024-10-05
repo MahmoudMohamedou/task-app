@@ -39,6 +39,7 @@
     "connect-pg-simple": "^9.0.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "express-session": "^1.17.3",
     "handlebars": "^4.7.8",
     "nodemailer": "^6.9.8",
