@@ -12,6 +12,7 @@ import { sendEmail } from 'src/utils/verify-account';
 import * as hb from 'handlebars';
 import * as fs from 'fs';
 import { context } from 'config';
+import * as path from "path";
 
 @Injectable()
 export class AuthService {
@@ -59,7 +60,7 @@ export class AuthService {
       isProd ? process.env.HOST_SERVER_PROD : process.env.HOST_SERVER_LOCAL
     }/auth/verify/${userWithToken.id}/${userWithToken.token.token}`;
     const html = fs
-      .readFileSync('public/verify-email-template.html', { encoding: 'utf-8' })
+      .readFileSync(path.join('public', 'verify-email-template.html'), { encoding: 'utf-8' })
       .toString();
     const content = hb.compile(html)({
       url,

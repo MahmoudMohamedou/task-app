@@ -23,7 +23,7 @@ async function bootstrap() {
   app.useGlobalFilters(new GlobalFilter(), new HttpFilter());
   app.use(
     cors({
-      origin: ['http://localhost:5000', 'http://www.kanban.exposemycode.com', 'http://kanban.exposemycode.com'],
+      origin: ['http://localhost:5000', 'http://www.kanban.exposemycode.com', 'http://kanban.exposemycode.com', 'https://kanban.exposemycode.com', 'https://www.kanban.exposemycode.com'],
       credentials: true,
     }),
   );
