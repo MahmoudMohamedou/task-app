@@ -12,9 +12,9 @@ export class SignUp {
   @IsNotEmpty()
   name: string;
 
-  @IsNotEmpty()
-  @IsMatch('password', {
-    message: "The password & repeated password doesn't match",
-  })
-  repeatPassword: string;
+  // @IsNotEmpty()
+  // @IsMatch('password', {
+  //   message: "The password & repeated password doesn't match",
+  // })
+  // repeatPassword: string;
 }

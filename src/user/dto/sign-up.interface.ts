@@ -3,5 +3,5 @@ export interface SignUp {
   email: string;
   password: string;
   name: string;
-  repeatPassword: string;
+  // repeatPassword: string;
 }

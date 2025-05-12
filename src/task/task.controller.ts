@@ -14,6 +14,7 @@ import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Request } from 'express';
+import { Role } from '../decorators/role.decorator';
 
 @Controller('task')
 export class TaskController {
@@ -52,7 +53,7 @@ export class TaskController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseUUIDPipe) id: string) {
-    return this.taskService.remove(id);
+  remove(@Param('id', ParseUUIDPipe) id: string, @Req() request) {
+    return this.taskService.remove(id, request);
   }
 }

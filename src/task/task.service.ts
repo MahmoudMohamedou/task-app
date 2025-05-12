@@ -1,4 +1,4 @@
-import { Injectable, Req } from '@nestjs/common';
+import { Injectable, Req, UnauthorizedException } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { context } from 'config';
@@ -71,7 +71,22 @@ export class TaskService {
     });
   }
 
-  async remove(id: string) {
+  async remove(id: string, request: Request) {
+    const currentUser = request.session.user.id;
+    const currentUserPermissions = request.session.user.permissions;
+    const currentTask = await context.task.findUnique({
+      where: { id },
+      select: { createdBy: { select: { id: true } } },
+    });
+
+    if (
+      currentUser !== currentTask.createdBy.id &&
+      !currentUserPermissions.includes('ADMIN')
+    ) {
+      throw new UnauthorizedException(
+        'You are not allowed to remove this task',
+      );
+    }
     return await context.task.delete({ where: { id } });
   }
 }
