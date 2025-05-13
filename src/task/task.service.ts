@@ -19,6 +19,12 @@ export class TaskService {
             name: true,
           },
         },
+        createdBy: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
     });
     return newTask;
