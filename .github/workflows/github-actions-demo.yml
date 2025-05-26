@@ -1,18 +1,27 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+name: task-app-actions
+run-name: task-app 🚀
+on:
+  push:
+    branches:
+      - master
+env:
+  CD_DEFAULT_BRANCH: master
 jobs:
-  Explore-GitHub-Actions:
+  task-app-gitHub-actions:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v4
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: Start ssh connexion
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.CD_HOST }}
+          username: ${{ secrets.CD_USERNAME }}
+          key: ${{ secrets.SSH_VPS_PRIVATE_KEY }}
+          script: |
+            cd task-app 
+            eval $(ssh-agent -s) && ssh-add <(echo "${{ secrets.SSH_GITHUB_PRIVATE_KEY }}")
+            git fetch origin 
+            git reset --hard origin/${{ env.CD_DEFAULT_BRANCH }}
+            npm ci
+            npm run build
+            pm2 restart ecosystem.config.js --env production
+            pm2 save
